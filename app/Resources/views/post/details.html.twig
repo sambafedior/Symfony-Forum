@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div>{{ post.theme.name }}</div>
+
+    <h1>{{ post.title }}</h1>
+
+    <p>par {{ post.author }} le {{ post.createdAt | date('d/m/Y') }}</p>
+
+    <p>{{ post.text }}</p>
+
+    <hr>
+    <h2>Les réponses</h2>
+
+    {% for answer in post.answers %}
+
+        <div>
+            <p>le {{ answer.createdAt | date('d/m/Y') }} par {{ answer.author }}</p>
+            <p>{{ answer.text }}</p>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

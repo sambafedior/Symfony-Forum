@@ -2,23 +2,22 @@
 
 {% block body %}
 
-    <h1>Liste des thèmes</h1>
+    <h1>{{ theme.name }}</h1>
 
     <table class="table">
         <tbody>
-        {% for theme in themeList %}
+        {% for post in postList %}
             <tr>
                 <td>
-                    <a href="{{ path('theme_details', {'id': theme.id}) }}">
-                        {{ theme.name }}
+                    <a href="{{ path('post_details', {'id': post.id}) }}">
+                        {{ post.title }}
                     </a>
                 </td>
-                <td>{{ theme.posts | length }} posts</td>
+                <td>{{ post.answers | length }} réponses</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
 {% endblock %}
-
 

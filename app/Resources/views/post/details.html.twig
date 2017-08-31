@@ -1,7 +1,16 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <div>{{ post.theme.name }}</div>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{{ path('homepage') }}">Liste des thèmes</a>
+        </li>
+        <li><a href="{{ path('theme_details', {'id': post.theme.id}) }}">
+                {{ post.theme.name }}
+            </a>
+        </li>
+
+    </ol>
 
     <h1>{{ post.title }}</h1>
 
@@ -10,13 +19,17 @@
     <p>{{ post.text }}</p>
 
     <hr>
-    <h2>Les réponses</h2>
+    <h2>Les réponses ({{ post.answers | length }})</h2>
+
+    <div class="col-md-6 col-md-offset-3">
+        <h3 class="text-center">Nouvelle réponse</h3>
+    </div>
 
     {% for answer in post.answers %}
-
-        <div>
+        <div class="col-md-8 col-md-offset-2">
             <p>le {{ answer.createdAt | date('d/m/Y') }} par {{ answer.author }}</p>
             <p>{{ answer.text }}</p>
+            <hr>
         </div>
 
     {% endfor %}

@@ -18,9 +18,13 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()
             ->getRepository("AppBundle:Theme");
 
-        $themeList = $repository->findAll();
 
-        return $this->render('default/index.html.twig', ["themeList" => $themeList]);
+
+        $list = $repository->getAllTheme()->getArrayResult();
+
+        return $this->render('default/index.html.twig', [
+            "themeList" => $list
+        ]);
     }
 
     /**
@@ -28,21 +32,27 @@ class DefaultController extends Controller
      * @param $id
      * @return Response
      */
-    public function themeAction($id){
+    public function themeAction($id)
+    {
 
         $repository = $this->getDoctrine()
             ->getRepository("AppBundle:Theme");
 
         $theme = $repository->find($id);
 
-        if(! $theme){
+        $allTheme = $repository->getAllTheme()->getArrayResult();
+
+
+        if (!$theme) {
             throw new NotFoundHttpException("Thème introuvable");
         }
 
 
         return $this->render('default/theme.html.twig', [
             "theme" => $theme,
-            "postList" => $theme->getPosts()
+            "postList" => $theme->getPosts(),
+            "all" => $allTheme
+
         ]);
     }
 }

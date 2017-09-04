@@ -5,7 +5,7 @@
         <li>
             <a href="{{ path('homepage') }}">Liste des thèmes</a>
         </li>
-        <li><a href="{{ path('theme_details', {'id': post.theme.id}) }}">
+        <li><a href="{{ path('theme_details', {'slug': post.theme.slug}) }}">
                 {{ post.theme.name }}
             </a>
         </li>

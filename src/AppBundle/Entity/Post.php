@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Theme;
 use AppBundle\Entity\Answer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Post
@@ -57,6 +58,31 @@ class Post
      */
     private $answers;
 
+
+    /**
+     * @var string
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     * @Gedmo\Slug(fields={"author","title"})
+     *
+     */
+    private $slug;
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
     /**
      * @return string
      */
@@ -83,8 +109,6 @@ class Post
      * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
-
-
 
 
     /**
@@ -168,6 +192,7 @@ class Post
     {
         return $this->title;
     }
+
     /**
      * Constructor
      */

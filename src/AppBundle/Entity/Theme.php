@@ -5,6 +5,9 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Post;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Theme
@@ -25,6 +28,9 @@ class Theme
 
     /**
      * @var string
+     * @Assert\Length(min=3, max=15,
+     *     minMessage="Un theme doit comporter au moins {{ limit }} caractères",
+     *     maxMessage="Un theme doit comporter au plus de {{ limit }} caractères")
      *
      * @ORM\Column(name="name", type="string", length=50, unique=true)
      */
@@ -35,6 +41,15 @@ class Theme
      * @ORM\OneToMany(targetEntity="Post", mappedBy="theme")
      */
     private $posts;
+
+
+    /**
+     * @var string
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     * @Gedmo\Slug(fields={"name"})
+     *
+     */
+    private $slug;
 
 
     /**
@@ -70,6 +85,7 @@ class Theme
     {
         return $this->name;
     }
+
     /**
      * Constructor
      */
@@ -110,5 +126,21 @@ class Theme
     public function getPosts()
     {
         return $this->posts;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
     }
 }

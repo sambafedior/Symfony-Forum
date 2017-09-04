@@ -18,41 +18,41 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()
             ->getRepository("AppBundle:Theme");
 
+        $PostsRepository = $this->getDoctrine()->getRepository("AppBundle:Post");
+
 
 
         $list = $repository->getAllTheme()->getArrayResult();
 
+        $PostsGroupByYear = $PostsRepository->getPostsGroupByYear();
+
         return $this->render('default/index.html.twig', [
-            "themeList" => $list
+            "themeList" => $list,
+            "PostsGroupByYear" => $PostsGroupByYear
         ]);
     }
 
     /**
-     * @Route("/theme/{id}", name="theme_details", requirements={"id":"\d+"})
-     * @param $id
+     * @Route("/theme/{slug}", name="theme_details")
+     * @param $slug
      * @return Response
      */
-    public function themeAction($id)
+    public function themeAction($slug)
     {
-
         $repository = $this->getDoctrine()
             ->getRepository("AppBundle:Theme");
 
-        $theme = $repository->find($id);
+        $theme = $repository->findOneBySlug($slug);
 
         $allTheme = $repository->getAllTheme()->getArrayResult();
-
 
         if (!$theme) {
             throw new NotFoundHttpException("Thème introuvable");
         }
 
-
         return $this->render('default/theme.html.twig', [
             "theme" => $theme,
             "postList" => $theme->getPosts(),
-            "all" => $allTheme
-
-        ]);
+            "all" => $allTheme]);
     }
 }

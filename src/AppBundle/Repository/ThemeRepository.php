@@ -19,9 +19,9 @@ class ThemeRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this->createQueryBuilder("t");
 
-        $qb->select("t.name, count(p) as numberOfPosts, t.id")
+        $qb->select("t.name, count(p) as numberOfPosts, t.slug")
         ->innerJoin("t.posts", "p")
-        ->groupBy("t.id");
+        ->groupBy("t.slug");
 
         dump($qb->getDQL());
 

@@ -4,20 +4,36 @@
 
     <h1>Liste des thèmes</h1>
 
-    <table class="table">
-        <tbody>
-        {% for theme in themeList %}
-            <tr>
-                <td>
-                    <a href="{{ path('theme_details', {'id': theme.id}) }}">
-                        {{ theme.name }}
-                    </a>
-                </td>
-                <td>{{ theme.numberOfPosts }} posts</td>
-            </tr>
+    <div class="table-responsive">
+        <table class="table ">
+            <tbody>
+            {% for theme in themeList %}
+                <tr class="alert alert-success">
+                    <td>
+                        <a href="{{ path('theme_details', {'slug': theme.slug}) }}">
+                            {{ theme.name }}
+                        </a>
+                    </td>
+                    <td class="badge badge-default badge-pill pull-right">{{ theme.numberOfPosts }} posts</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}
+
+{% block aside %}
+    <h3>Les Postes pas années</h3>
+
+    <ul class="list-group">
+        {% for item in PostsGroupByYear %}
+            <a href="{{ path('post_by_year', {'year': item.yearPublished}) }}">
+            <li class="list-group-item justify-content-between"> {{ item.yearPublished }}
+                <span class="badge badge-default badge-pill pull-right">{{ item.numberOfPosts }} </span> </a></li>
         {% endfor %}
-        </tbody>
-    </table>
+    </ul>
 
 {% endblock %}
 

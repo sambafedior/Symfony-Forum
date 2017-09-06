@@ -29,41 +29,9 @@ class DefaultController extends Controller
 
         $PostsGroupByYear = $PostsRepository->getPostsGroupByYear();
 
-        #Gestion des nouveau post
-        $user = $this->getUser();
-        $roles = isset($user)?$user->getRoles():[];
-        $formView = null;
-
-        #affichage du formulaire que si le role de l'utilisateur est ROLE_AUTHOR
-        if (in_array("ROLE_AUTHOR", $roles)) {
-
-            #création du formulaire
-            $post = new Post();
-            $post->setCreatedAt(new \DateTime());
-            $post->setAuthor($user);
-
-            $form = $this->createForm(PostType::class, $post);
-
-            #hydratation de l'entité
-            $form->handleRequest($request);
-
-            #Traitement du formulaire
-            if ($form->isSubmitted() and $form->isValid()) {
-                #persistance de l'entité
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($post);
-                $em->flush();
-
-                #redirection pour eviter de poster deux fois les données
-                return $this->redirectToRoute("homepage");
-            }
-            #fin de la gestion des nouveau posts
-            $formView = $form->createView();
-        }
         return $this->render('default/index.html.twig', [
             "themeList" => $list,
-            "PostsGroupByYear" => $PostsGroupByYear,
-            "postForm" => $formView
+            "PostsGroupByYear" => $PostsGroupByYear
         ]);
     }
 
@@ -107,6 +75,10 @@ class DefaultController extends Controller
 
             #Traitement du formulaire
             if ($form->isSubmitted() and $form->isValid()) {
+
+                $uploadManager = $this->get("stof_doctrine_extensions.uploadable.manager");
+                $uploadManager->markEntityToUpload($post,$post->getImageFileName());
+
                 #persistance de l'entité
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($post);

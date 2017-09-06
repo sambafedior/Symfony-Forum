@@ -18,6 +18,15 @@
 
     <p>{{ post.text | purify }}</p>
 
+    {% if post.imageFileName %}
+        <div class="row">
+            <div class="col">
+                <img src="{{ asset( 'uploadedFiles/' ~ post.imageFileName) }}" class="img-responsive img-rounded img-fluid">
+            </div>
+        </div>
+
+    {% endif %}
+
     <hr>
     <h2>Les réponses ({{ post.answers | length }})</h2>
 

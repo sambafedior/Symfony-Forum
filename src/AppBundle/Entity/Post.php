@@ -13,6 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Post
  * @ORM\Table(name="posts")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PostRepository")
+ * @Gedmo\Uploadable(
+ *     allowOverwrite=true,
+ *     filenameGenerator="SHA1",
+ *     maxSize="20000000",
+ *     allowedTypes="image/jpeg,image/png")
  */
 class Post
 {
@@ -71,9 +76,36 @@ class Post
      */
     private $slug;
 
-    public function getAuthorFullName(){
-        return $this->author->getFirstName(). " ". $this->author->getName();
-}
+    /**
+     * @var string
+     * @ORM\Column(name="image_file_name", type="string", length=100, nullable= true)
+     * @Gedmo\UploadableFileName()
+     */
+    private $imageFileName;
+
+    public function getAuthorFullName()
+    {
+        return $this->author->getFirstName() . " " . $this->author->getName();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImageFileName()
+    {
+        return $this->imageFileName;
+    }
+
+    /**
+     * @param mixed $imageFileName
+     * @return Post
+     */
+    public function setImageFileName($imageFileName)
+    {
+        $this->imageFileName = $imageFileName;
+        return $this;
+    }
+
 
     /**
      * @return string

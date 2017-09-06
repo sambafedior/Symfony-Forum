@@ -4,19 +4,24 @@
             <a class="navbar-brand" href="{{ path('homepage') }}">Home</a>
         </div>
         <ul class="nav navbar-nav">
-            {% if is_granted('ROLE_ADMIN') %}
-                <li class="navbar-text "> Hello {{ app.user.userName}} </li>
-                <li class="pull-right" ><a href="{{ path('admin_logout') }}">Déonnexion</a></li>
-            {% else %}
-                <li class="pull-right" ><a href="{{ path('admin_login') }}">Connexion Admin</a></li>
-            {% endif %}
+
             {% if is_granted('ROLE_AUTHOR') %}
                 <li class="navbar-text"> Hello {{ app.user.firstName }} </li>
-                <li><a href="{{ path('author_logout') }}">Déonnexion</a></li>
+                <li><a href="{{ path('author_logout') }}">Déconnexion</a></li>
             {% else %}
                 <li><a href="{{ path('author_login') }}">Connexion Author</a></li>
             {% endif %}
-            <li><a href="{{ path('author_registration') }}">Inscription</a> </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {% if is_granted(['ROLE_ADMIN','ROLE_AUTHOR']) == false %}
+            <li><a href="{{ path('author_registration') }}"><span class="glyphicon glyphicon-user"></span> Inscription</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li> Hello {{ app.user.userName}} </li>
+                <li><a href="{{ path('admin_logout') }}"><span class="glyphicon glyphicon-log-in"></span> Déconnexion</a></li>
+            {% else %}
+                <li><a href="{{ path('admin_login') }}"> <span class="glyphicon glyphicon-log-in"></span> Admin</a></li>
+            {% endif %}
         </ul>
     </div>
 </nav>

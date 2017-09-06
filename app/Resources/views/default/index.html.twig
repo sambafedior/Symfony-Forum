@@ -20,13 +20,6 @@
         </table>
     </div>
 
-    {% if is_granted(['ROLE_ADMIN','ROLE_AUTHOR']) %}
-        <h2>Nouveau Post</h2>
-
-        {{ form(postForm) }}
-
-    {% endif %}
-
 {% endblock %}
 
 {% block aside %}

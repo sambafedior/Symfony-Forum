@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     filenameGenerator="SHA1",
  *     maxSize="20000000",
  *     allowedTypes="image/jpeg,image/png")
+ * @Gedmo\Loggable(logEntryClass="AppBundle\Entity\Log")
  */
 class Post
 {
@@ -26,6 +27,7 @@ class Post
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
      */
     private $id;
 
@@ -35,7 +37,7 @@ class Post
      *     minMessage="Un titre doit comporter au moins {{ limit }} caractères",
      *     maxMessage="Un titre doit comporter au plus de {{ limit }} caractères")
      * @Assert\NotBlank( message="Le titre ne peux etre vide")
-     *
+     * @Gedmo\Versioned()
      * @ORM\Column(name="title", type="string", length=80)
      */
     private $title;
@@ -46,6 +48,7 @@ class Post
      *     minMessage="Un texte doit comporter au moins {{ limit }} caractères")
      * @Assert\NotBlank( message="Le texte ne peux etre vide")
      * @ORM\Column(name="post_text", type="text")
+     * @Gedmo\Versioned()
      */
     private $text;
 

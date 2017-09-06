@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
     <h1>Liste des thèmes</h1>
 
     <div class="table-responsive">
@@ -21,6 +20,12 @@
         </table>
     </div>
 
+    {% if is_granted(['ROLE_ADMIN','ROLE_AUTHOR']) %}
+        <h2>Nouveau Post</h2>
+
+        {{ form(postForm) }}
+
+    {% endif %}
 
 {% endblock %}
 
@@ -30,11 +35,17 @@
     <ul class="list-group">
         {% for item in PostsGroupByYear %}
             <a href="{{ path('post_by_year', {'year': item.yearPublished}) }}">
-            <li class="list-group-item justify-content-between"> {{ item.yearPublished }}
-                <span class="badge badge-default badge-pill pull-right">{{ item.numberOfPosts }} </span> </a></li>
+                <li class="list-group-item justify-content-between"> {{ item.yearPublished }}
+                    <span class="badge badge-default badge-pill pull-right">{{ item.numberOfPosts }} </span>
+            </a></li>
         {% endfor %}
     </ul>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}"></script>
 {% endblock %}
 
 

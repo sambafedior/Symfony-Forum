@@ -19,6 +19,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/lexer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/orm" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/egeloen/ckeditor-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/egeloen/json-builder" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/exercise/htmlpurifier-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ezyang/htmlpurifier" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fzaninotto/faker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/gedmo/doctrine-extensions" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/incenteev/composer-parameter-handler" />
@@ -81,6 +85,10 @@
           <root url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/lexer" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/orm" />
+          <root url="file://$MODULE_DIR$/vendor/egeloen/ckeditor-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/egeloen/json-builder" />
+          <root url="file://$MODULE_DIR$/vendor/exercise/htmlpurifier-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/ezyang/htmlpurifier" />
           <root url="file://$MODULE_DIR$/vendor/fzaninotto/faker" />
           <root url="file://$MODULE_DIR$/vendor/gedmo/doctrine-extensions" />
           <root url="file://$MODULE_DIR$/vendor/incenteev/composer-parameter-handler" />
@@ -127,6 +135,10 @@
           <root url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/lexer" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/orm" />
+          <root url="file://$MODULE_DIR$/vendor/egeloen/ckeditor-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/egeloen/json-builder" />
+          <root url="file://$MODULE_DIR$/vendor/exercise/htmlpurifier-bundle" />
+          <root url="file://$MODULE_DIR$/vendor/ezyang/htmlpurifier" />
           <root url="file://$MODULE_DIR$/vendor/fzaninotto/faker" />
           <root url="file://$MODULE_DIR$/vendor/gedmo/doctrine-extensions" />
           <root url="file://$MODULE_DIR$/vendor/incenteev/composer-parameter-handler" />

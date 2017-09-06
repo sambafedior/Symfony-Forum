@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Theme;
 use AppBundle\Entity\Answer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Post
- *
  * @ORM\Table(name="posts")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PostRepository")
  */
@@ -18,7 +18,6 @@ class Post
 {
     /**
      * @var int
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -27,6 +26,10 @@ class Post
 
     /**
      * @var string
+     * @Assert\Length(min=3, max=50,
+     *     minMessage="Un titre doit comporter au moins {{ limit }} caractères",
+     *     maxMessage="Un titre doit comporter au plus de {{ limit }} caractères")
+     * @Assert\NotBlank( message="Le titre ne peux etre vide")
      *
      * @ORM\Column(name="title", type="string", length=80)
      */
@@ -34,15 +37,16 @@ class Post
 
     /**
      * @var string
-     *
+     * @Assert\Length(min=3,
+     *     minMessage="Un texte doit comporter au moins {{ limit }} caractères")
+     * @Assert\NotBlank( message="Le texte ne peux etre vide")
      * @ORM\Column(name="post_text", type="text")
      */
     private $text;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="author", type="string", length=50)
+     * @var Author
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Author", inversedBy="posts")
      */
     private $author;
 
@@ -62,10 +66,14 @@ class Post
     /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @Gedmo\Slug(fields={"author","title"})
+     * @Gedmo\Slug(fields={"title"})
      *
      */
     private $slug;
+
+    public function getAuthorFullName(){
+        return $this->author->getFirstName(). " ". $this->author->getName();
+}
 
     /**
      * @return string
@@ -84,7 +92,7 @@ class Post
     }
 
     /**
-     * @return string
+     * @return Author
      */
     public function getAuthor()
     {
@@ -92,10 +100,10 @@ class Post
     }
 
     /**
-     * @param string $author
+     * @param Author $author
      * @return Post
      */
-    public function setAuthor($author)
+    public function setAuthor(Author $author)
     {
         $this->author = $author;
 

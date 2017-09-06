@@ -14,9 +14,9 @@
 
     <h1>{{ post.title }}</h1>
 
-    <p>par {{ post.author }} le {{ post.createdAt | date('d/m/Y') }}</p>
+    <p>par {{ post.author.name }} le {{ post.createdAt | date('d/m/Y') }}</p>
 
-    <p>{{ post.text }}</p>
+    <p>{{ post.text | purify }}</p>
 
     <hr>
     <h2>Les réponses ({{ post.answers | length }})</h2>
@@ -26,11 +26,21 @@
     </div>
 
     {% for answer in post.answers %}
-        <div class="col-md-8 col-md-offset-2">
-            <p>le {{ answer.createdAt | date('d/m/Y') }} par {{ answer.author }}</p>
-            <p>{{ answer.text }}</p>
-            <hr>
+        <div class="col-md-8 col-md-offset-2 list-group">
+            <p class="list-group-item list-group-item-action flex-column align-items-start active">
+                <span class="glyphicon glyphicon-user"></span> {{ answer.author }}
+                <small class="pull-right"><span
+                            class="glyphicon glyphicon-calendar "></span> {{ answer.createdAt | date('d/m/Y') }}</small>
+            </p>
+
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">
+                    {{ answer.text }}
+                </p>
+            </div>
         </div>
+
+
 
     {% endfor %}
 

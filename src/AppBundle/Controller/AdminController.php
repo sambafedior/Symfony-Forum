@@ -16,6 +16,33 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminController extends Controller
 {
+    /**
+     * @Route("/" , name="admin_home")
+     * @return Response
+     */
+    public function indexAction(){
+        return $this->render("admin/index.html.twig");
+    }
+
+    /**
+     * @return Response
+     * @Route("/login" , name="admin_login")
+     */
+    public function admin_LoginAction(){
+
+        #controle d'errer de mot de passe
+        $securityUtils = $this->get("security.authentication_utils");
+        $lastUserName = $securityUtils->getLastUsername();
+        $error = $securityUtils->getLastAuthenticationError();
+
+
+        return $this->render("default/generic-login.html.twig",[
+            "action" =>$this->generateUrl("admin_login_check"), #nom de la route declarer dans sécurité et config .yml
+            "title"=> "Login des administrateurs",
+            "userName" => $lastUserName,
+            "error" => $error
+        ]);
+    }
 
     /**
      * @Route("/themes", name="admin_themes")
@@ -33,7 +60,7 @@ class AdminController extends Controller
         $theme = new Theme();
         $form = $this->createForm(ThemeType::class, $theme);
 
-        #idratation de l'entité
+        #hydratation de l'entité
         $form->handleRequest($request);
 
         #Traitement du formulaire
@@ -53,4 +80,11 @@ class AdminController extends Controller
             "themeForm" => $form->createView()]);
     }
 
+    /**
+     * @return Response
+     * @Route("/secure", name="admin_only_super_admin")
+     */
+    public function superUserAction(){
+        return $this->render("admin/super.htlm.twig");
+    }
 }

@@ -90,6 +90,31 @@ class Author implements \Serializable, UserInterface
     private $answers;
 
     /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vote", mappedBy="author")
+     */
+    private  $votes;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getVotes()
+    {
+        return $this->votes;
+    }
+
+    /**
+     * @param ArrayCollection $votes
+     * @return Author
+     */
+    public function setVotes($votes)
+    {
+        $this->votes = $votes;
+        return $this;
+    }
+
+
+    /**
      * @return ArrayCollection
      */
     public function getAnswers()

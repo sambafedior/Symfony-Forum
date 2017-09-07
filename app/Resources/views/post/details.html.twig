@@ -36,7 +36,11 @@
     </div>
 
     {% for answer in post.answers %}
+
         <div class="col-md-8 col-md-offset-2 list-group">
+            <div class="row">
+                <a href="{{ path('answer_vote', {'id': answer.id}) }}">Voter</a>
+            </div>
             <p class="list-group-item list-group-item-action flex-column align-items-start active">
                 <span class="glyphicon glyphicon-user"></span> {{ answer.author.name }} {{ answer.author.firstName }}
                 <small class="pull-right"><span
@@ -49,14 +53,15 @@
                 </p>
             </div>
         </div>
-
     {% endfor %}
+
+
     {% if is_granted(['ROLE_ADMIN','ROLE_AUTHOR']) %}
         <div class="col-md-8 col-md-offset-2 list-group">
             <div class="d-flex w-100 justify-content-between">
                 <p class="mb-1">
-                    {{ form(answerForm) }}
                 </p>
+                <p>{{ form(answerForm) }}</p>
             </div>
         </div>
 

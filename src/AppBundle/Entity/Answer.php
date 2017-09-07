@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Post;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -54,6 +55,31 @@ class Answer
      * @Gedmo\Versioned()
      */
     private $post;
+
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vote", mappedBy="answer")
+     */
+    private $votes;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getVotes()
+    {
+        return $this->votes;
+    }
+
+    /**
+     * @param ArrayCollection $votes
+     * @return Answer
+     */
+    public function setVotes($votes)
+    {
+        $this->votes = $votes;
+        return $this;
+    }
 
 
     /**

@@ -5,8 +5,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
 use AppBundle\Entity\Answer;
+use AppBundle\Entity\Vote;
 use AppBundle\Form\AnswerType;
 use AppBundle\Form\PostType;
+use AppBundle\Form\VoteType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
@@ -26,8 +28,7 @@ class PostController extends Controller
     public function detailsAction($slug, Request $request)
     {
 
-        $repository = $this->getDoctrine()
-            ->getRepository("AppBundle:Post");
+        $repository = $this->getDoctrine()->getRepository("AppBundle:Post");
 
         /**
          * @var $post Post
@@ -43,32 +44,67 @@ class PostController extends Controller
         #instatiation de l'antité answer
         $answer = new Answer();
 
+
+
         #configuration par defaut
         $answer->setAuthor($author);
         $answer->setPost($post);
         $answer->setCreatedAt(new \DateTime());
 
+
+
         #création du formulaire
         $form = $this->createForm(AnswerType::class, $answer);
+
 
         #hydratation de l'entité avec la requete
         $form->handleRequest($request);
 
-        if($form->isValid() and $form->isSubmitted()){
+
+        if ($form->isValid() and $form->isSubmitted()) {
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($answer);
+
+            #persistance du vote
+
             $em->flush();
 
-            return $this->redirectToRoute("post_details",["slug" => $post->getSlug()
+            return $this->redirectToRoute("post_details", ["slug" => $post->getSlug()
             ]);
         }
 
         return $this->render("post/details.html.twig", [
             "post" => $post,
             "answerList" => $post->getAnswers(),
-            "answerForm" => $form->createView()
+            "answerForm" => $form->createView(),
+
         ]);
+    }
+
+    /**
+     * @Route("/answer-vote/{id}", name="answer_vote")
+     * @param Answer $answer
+     * @param Request $request
+     */
+    public function voteAction(Answer $answer, Request $request)
+    {
+
+        $vote = new Vote();
+        $vote->setAnswer($answer)->setAuthor($this->getUser())
+            ->setVote(1);
+
+        $em = $this->getDoctrine()->getManager();
+
+        #persistance du vote
+        $em->persist($vote);
+        $em->flush();
+
+        $referer = $request->headers->get("referer");
+
+        return $this->redirect($referer);
+
+
     }
 
     /**
@@ -105,7 +141,7 @@ class PostController extends Controller
         $user = $this->getUser();
         $roles = isset($user) ? $user->getRoles() : [];
         $userId = isset($user) ? $user->getId() : null;
-        if (!in_array("ROLE_AUTHOR", $roles) || $userId != $post->getAuthor()->getId()){
+        if (!in_array("ROLE_AUTHOR", $roles) || $userId != $post->getAuthor()->getId()) {
             throw new AccessDeniedException("Vous n'avez pas les droits pour modifier ce post ");
         }
 
@@ -115,7 +151,7 @@ class PostController extends Controller
         #hydratation de l'entité avec la requete
         $form->handleRequest($request);
 
-        if($form->isValid() and $form->isSubmitted()){
+        if ($form->isValid() and $form->isSubmitted()) {
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
@@ -125,7 +161,7 @@ class PostController extends Controller
             );
         }
 
-        return $this->render("post/edit.html.twig",["postForm"=>$form->createView()]);
+        return $this->render("post/edit.html.twig", ["postForm" => $form->createView()]);
 
     }
 

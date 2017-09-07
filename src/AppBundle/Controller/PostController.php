@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\AppBundle;
+use AppBundle\Entity\Answer;
+use AppBundle\Form\AnswerType;
 use AppBundle\Form\PostType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,7 +25,7 @@ class PostController extends Controller
      * )
      * @return Response
      */
-    public function detailsAction($slug)
+    public function detailsAction($slug, Request $request)
     {
 
         $repository = $this->getDoctrine()
@@ -38,11 +40,36 @@ class PostController extends Controller
             throw new NotFoundHttpException("post introuvable");
         }
 
+        $author = $this->getUser();
+
+        #instatiation de l'antité answer
+        $answer = new Answer();
+
+        #configuration par defaut
+        $answer->setAuthor($author);
+        $answer->setPost($post);
+        $answer->setCreatedAt(new \DateTime());
+
+        #création du formulaire
+        $form = $this->createForm(AnswerType::class, $answer);
+
+        #hydratation de l'entité avec la requete
+        $form->handleRequest($request);
+
+        if($form->isValid() and $form->isSubmitted()){
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($answer);
+            $em->flush();
+
+            return $this->redirectToRoute("post_details",["slug" => $post->getSlug()
+            ]);
+        }
+
         return $this->render("post/details.html.twig", [
             "post" => $post,
             "answerList" => $post->getAnswers(),
-
-
+            "answerForm" => $form->createView()
         ]);
     }
 
@@ -58,7 +85,6 @@ class PostController extends Controller
 
         $PostRepository = $this->getDoctrine()
             ->getRepository("AppBundle:Post");
-
 
         return $this->render("default/theme.html.twig", [
             "title" => "Listes des postes de l'années $year ",
@@ -92,9 +118,6 @@ class PostController extends Controller
 
         if($form->isValid() and $form->isSubmitted()){
 
-            #$uploadManager = $this->get("stof_doctrine_extensions.uploadable.manager");
-            #$uploadManager->markEntityToUpload($post,$post->getImageFileName());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
@@ -105,7 +128,7 @@ class PostController extends Controller
             );
         }
 
-        return $this->render("post/edit.html.twig",["postform"=>$form->createView() ]);
+        return $this->render("post/edit.html.twig",["postForm"=>$form->createView() ]);
 
     }
 

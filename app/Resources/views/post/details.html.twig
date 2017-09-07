@@ -21,7 +21,8 @@
     {% if post.imageFileName %}
         <div class="row">
             <div class="col">
-                <img src="{{ asset( 'uploadedFiles/' ~ post.imageFileName) }}" class="img-responsive img-rounded img-fluid">
+                <img src="{{ asset( 'uploadedFiles/' ~ post.imageFileName) }}"
+                     class="img-responsive img-rounded img-fluid">
             </div>
         </div>
 
@@ -37,7 +38,7 @@
     {% for answer in post.answers %}
         <div class="col-md-8 col-md-offset-2 list-group">
             <p class="list-group-item list-group-item-action flex-column align-items-start active">
-                <span class="glyphicon glyphicon-user"></span> {{ answer.author }}
+                <span class="glyphicon glyphicon-user"></span> {{ answer.author.name }} {{ answer.author.firstName }}
                 <small class="pull-right"><span
                             class="glyphicon glyphicon-calendar "></span> {{ answer.createdAt | date('d/m/Y') }}</small>
             </p>
@@ -49,8 +50,19 @@
             </div>
         </div>
 
-
-
     {% endfor %}
+    {% if is_granted(['ROLE_ADMIN','ROLE_AUTHOR']) %}
+        <div class="col-md-8 col-md-offset-2 list-group">
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">
+                    {{ form(answerForm) }}
+                </p>
+            </div>
+        </div>
+
+    {% else %}
+        <a href="{{ path('author_login') }}">Veuillez vous connexter pour repondre</a>
+    {% endif %}
+
 
 {% endblock %}

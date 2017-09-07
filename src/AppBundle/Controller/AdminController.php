@@ -30,7 +30,7 @@ class AdminController extends Controller
      */
     public function admin_LoginAction(){
 
-        #controle d'errer de mot de passe
+        #controle d'erruer de mot de passe
         $securityUtils = $this->get("security.authentication_utils");
         $lastUserName = $securityUtils->getLastUsername();
         $error = $securityUtils->getLastAuthenticationError();

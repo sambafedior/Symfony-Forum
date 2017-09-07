@@ -39,13 +39,10 @@ class AnswerFixture extends AbstractFixture implements OrderedFixtureInterface
                 $post = $this->getReference("post_{$k}");
 
                 $entity = new Answer();
+                $author_reference = "auteur_". mt_rand(1,3);
                 $entity->setText($faker->text(mt_rand(30,200)))
-                        ->setAuthor($faker->email)
-                        ->setCreatedAt(
-                            $faker->dateTimeBetween($post->getCreatedAt()->format('Y-m-d H:i:s'),
-                            "now"
-                            )
-                        )
+                        ->setAuthor($this->getReference("$author_reference"))
+                        ->setCreatedAt($faker->dateTimeBetween($post->getCreatedAt()->format('Y-m-d H:i:s'),"now"))
                         ->setPost($post);
 
                 $manager->persist($entity);

@@ -4,12 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Post;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Answer
  *
  * @ORM\Table(name="answers")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AnswerRepository")
+ * @Gedmo\Loggable(logEntryClass="AppBundle\Entity\Log")
  */
 class Answer
 {
@@ -23,9 +25,10 @@ class Answer
     private $id;
 
     /**
-     * @var string
+     * @var Author
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Author", inversedBy="answers" )
+     * @Gedmo\Versioned()
      *
-     * @ORM\Column(name="author", type="string", length=50)
      */
     private $author;
 
@@ -33,6 +36,7 @@ class Answer
      * @var string
      *
      * @ORM\Column(name="answer_text", type="text")
+     * @Gedmo\Versioned()
      */
     private $text;
 
@@ -46,6 +50,7 @@ class Answer
     /**
      * @var Post
      * @ORM\ManyToOne(targetEntity="Post", inversedBy="answers")
+     * @Gedmo\Versioned()
      */
     private $post;
 

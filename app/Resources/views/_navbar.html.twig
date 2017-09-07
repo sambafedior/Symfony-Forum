@@ -1,12 +1,12 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{ path('homepage') }}">Home</a>
+            <a class="navbar-brand" href="{{ path('homepage') }}"><span class="glyphicon glyphicon-home"></span> Home</a>
         </div>
         <ul class="nav navbar-nav">
 
             {% if is_granted('ROLE_AUTHOR') %}
-                <li class="navbar-text"> Hello {{ app.user.firstName }} </li>
+                <li class="navbar-text pull-right"> Hello {{ app.user.firstName }} </li>
                 <li><a href="{{ path('author_logout') }}">Déconnexion</a></li>
             {% else %}
                 <li><a href="{{ path('author_login') }}">Connexion Author</a></li>

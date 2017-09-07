@@ -83,6 +83,30 @@ class Author implements \Serializable, UserInterface
      */
     private $posts;
 
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Answer", mappedBy="author" )
+     */
+    private $answers;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param ArrayCollection $answers
+     * @return Author
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
+        return $this;
+    }
+
 
     /**
      * Get id

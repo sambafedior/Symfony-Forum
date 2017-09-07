@@ -23,14 +23,15 @@
 {% endblock %}
 
 {% block aside %}
-    <h3>Les Postes pas années</h3>
+    <h3>Les Postes par années</h3>
 
     <ul class="list-group">
         {% for item in PostsGroupByYear %}
             <a href="{{ path('post_by_year', {'year': item.yearPublished}) }}">
                 <li class="list-group-item justify-content-between"> {{ item.yearPublished }}
                     <span class="badge badge-default badge-pill pull-right">{{ item.numberOfPosts }} </span>
-            </a></li>
+            </li></a>
+
         {% endfor %}
     </ul>
 

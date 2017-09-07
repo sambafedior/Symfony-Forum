@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Post;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+
 /**
  * Answer
  *

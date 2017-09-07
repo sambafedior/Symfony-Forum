@@ -61,7 +61,17 @@
         </div>
 
     {% else %}
-        <a href="{{ path('author_login') }}">Veuillez vous connexter pour repondre</a>
+        <div class="col-md-8 col-md-offset-2 list-group">
+            <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">Veuillez vous connecter pour repondre
+                    <button type="button"><a href="{{ path('author_login') }}"> Connexion</a></button>
+                </p>
+            </div>
+        </div>
+
+
+
+
     {% endif %}
 
 

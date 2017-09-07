@@ -20,9 +20,7 @@ class PostController extends Controller
 
     /**
      * @param $slug
-     * @Route("/post/{slug}",
-     *          name="post_details"
-     * )
+     * @Route("/post/{slug}",name="post_details")
      * @return Response
      */
     public function detailsAction($slug, Request $request)
@@ -97,10 +95,11 @@ class PostController extends Controller
     /**
      * @param Request $request
      * @param Post $post
+     * @param $slug
      * @return Response
-     * @Route("/post/modif/{id}", name="post_edit")
+     * @Route("/post/modif/{slug}", name="post_edit")
      */
-    public function editAction(Request $request, Post $post)
+    public function editAction(Request $request, Post $post, $slug)
     {
         #sécurisation de l'operation
         $user = $this->getUser();
@@ -122,13 +121,11 @@ class PostController extends Controller
             $em->persist($post);
             $em->flush();
 
-            return $this->redirectToRoute(
-                "post_details",
-                ["slug" => $post->getSlug()]
+            return $this->redirectToRoute("post_details", ["slug" => $post->getSlug()]
             );
         }
 
-        return $this->render("post/edit.html.twig",["postForm"=>$form->createView() ]);
+        return $this->render("post/edit.html.twig",["postForm"=>$form->createView()]);
 
     }
 

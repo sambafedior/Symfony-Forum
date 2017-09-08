@@ -1,5 +1,6 @@
 {% extends "base.html.twig" %}
 
+
 {% block body %}
     <ol class="breadcrumb">
         <li>
@@ -35,16 +36,26 @@
         <h3 class="text-center">Nouvelle réponse</h3>
     </div>
 
-    {% for answer in post.answers %}
+    {% for answer in  post.answers %}
 
         <div class="col-md-8 col-md-offset-2 list-group">
-            <div class="row">
-                <a href="{{ path('answer_vote', {'id': answer.id}) }}">Voter</a>
+            <div id="rating">
+                <button class="like"><a href="{{ path('answer_vote_like', {'id': answer.id}) }}">
+                        <span class="glyphicon glyphicon-thumbs-up "></span></a></button>
+                <span class="likes">0</span>
+
+                <button class="dislike"><a href="{{ path('answer_vote_dislike', {'id': answer.id}) }}">
+                        <span class="glyphicon glyphicon-thumbs-down "></span></a>
+                </button><span class="dislikes">0</span>
             </div>
+
             <p class="list-group-item list-group-item-action flex-column align-items-start active">
-                <span class="glyphicon glyphicon-user"></span> {{ answer.author.name }} {{ answer.author.firstName }}
-                <small class="pull-right"><span
-                            class="glyphicon glyphicon-calendar "></span> {{ answer.createdAt | date('d/m/Y') }}</small>
+                <span class="glyphicon glyphicon-user">
+
+                </span> {{ answer.author.name }} {{ answer.author.firstName }}
+                <small class="pull-right"><span class="glyphicon glyphicon-calendar ">
+
+                    </span> {{ answer.createdAt | date('d/m/Y') }}</small>
             </p>
 
             <div class="d-flex w-100 justify-content-between">
@@ -79,5 +90,26 @@
 
     {% endif %}
 
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bower-components/like-dislike/js/like-dislike.min.js') }}"></script>
+
+    <script type="text/javascript">
+        $('#rating').likeDislike({
+            initialValue: 0,
+            click: function (value, l, d, event) {
+                var likes = $(this.element).find('.likes');
+                var dislikes = $(this.element).find('.dislikes');
+
+                likes.text(parseInt(likes.text()) + l);
+
+                dislikes.text(parseInt(dislikes.text()) + d);
+
+            }
+        });
+    </script>
 
 {% endblock %}

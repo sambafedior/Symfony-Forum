@@ -82,17 +82,18 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/answer-vote/{id}", name="answer_vote")
+
+     /**
+     * @Route("/answer-vote-like/{id}", name="answer_vote_like")
      * @param Answer $answer
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function voteAction(Answer $answer, Request $request)
+    public function voteLikeAction(Answer $answer, Request $request)
     {
 
         $vote = new Vote();
-        $vote->setAnswer($answer)->setAuthor($this->getUser())
-            ->setVote(1);
+        $vote->setAnswer($answer)->setAuthor($this->getUser())->setVote(1);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -104,7 +105,27 @@ class PostController extends Controller
 
         return $this->redirect($referer);
 
+    }
 
+    /**
+     * @Route("/answer-vote-dislike/{id}", name="answer_vote_dislike")
+     * @param Answer $answer
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function voteDislikeAction(Answer $answer, Request $request){
+        $vote = new Vote();
+        $vote->setAnswer($answer)->setAuthor($this->getUser())->setVote(-1);
+
+        $em = $this->getDoctrine()->getManager();
+
+        #persistance du vote
+        $em->persist($vote);
+        $em->flush();
+
+        $referer = $request->headers->get("referer");
+
+        return $this->redirect($referer);
     }
 
     /**

@@ -55,7 +55,7 @@ class DefaultController extends Controller
 
         #Gestion des nouveau post
         $user = $this->getUser();
-        $roles = isset($user)?$user->getRoles():[];
+        $roles = isset($user) ? $user->getRoles() : [];
         $formView = null;
 
 
@@ -68,27 +68,22 @@ class DefaultController extends Controller
             $post->setAuthor($user);
             $post->setTheme($theme);
 
-            $form = $this->createForm(PostType::class, $post);
+            #$form = $this->createForm(PostType::class, $post);
 
             #hydratation de l'entité
-            $form->handleRequest($request);
+            #$form->handleRequest($request);
+            $formHandler = $this->get("post.form_handler");
+            $formHandler->setPost($post);
 
             #Traitement du formulaire
-            if ($form->isSubmitted() and $form->isValid()) {
-
-                $uploadManager = $this->get("stof_doctrine_extensions.uploadable.manager");
-                $uploadManager->markEntityToUpload($post,$post->getImageFileName());
-
-                #persistance de l'entité
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($post);
-                $em->flush();
-
+            if ($formHandler->process()) {
                 #redirection pour eviter de poster deux fois les données
                 return $this->redirectToRoute("homepage");
             }
             #fin de la gestion des nouveau posts
-            $formView = $form->createView();
+            #$formView = $form->createView();
+            $formView=$formHandler->getFormView();
+
         }
 
         return $this->render('default/theme.html.twig', [
@@ -151,5 +146,18 @@ class DefaultController extends Controller
             "error" => $error
 
         ]);
+    }
+
+    /**
+     * @return Response
+     * @Route("/test-service")
+     */
+    public function testService()
+    {
+        $helloService = $this->get("service.hello");
+        $helloService->setName("Samba");
+        $newHelloService = $this->get("service.hello");
+        $message = $helloService->sayHello() . " " . $newHelloService->sayHello();
+        return $this->render("default/test-service.html.twig", array("message" => $message));
     }
 }

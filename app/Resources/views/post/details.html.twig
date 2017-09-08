@@ -15,7 +15,7 @@
 
     <h1>{{ post.title }}</h1>
 
-    <p>par {{ post.author.name }} le {{ post.createdAt | date('d/m/Y') }}</p>
+    <p>par {{ post.author.name }} il y a {{ post.createdAt | elapsed }} </p>
 
     <p>{{ post.text | purify }}</p>
 

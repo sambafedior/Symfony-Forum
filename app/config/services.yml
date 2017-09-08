@@ -40,3 +40,7 @@ services:
         class: AppBundle\Form\PostType
         arguments: ["@post.file_datatransformer"]
         tags: [{name: form.type}]
+
+    twig.filter.elapsed:
+        class: AppBundle\twig\ElapsedTimeFilter
+        tags: [{name: twig.extension}]
